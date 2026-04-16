@@ -2,7 +2,7 @@ from flatlib.chart import Chart
 from flatlib import const
 from flatlib.datetime import Datetime
 from flatlib.geopos import GeoPos
-from flatlib import settings
+
 
 
 def get_astrology_data(date_str: str, time_str: str, lat: float, lon: float, utc_offset: str):
