@@ -1,3 +1,4 @@
+from fastapi.responses import JSONResponse
 from supabase_service import save_horoscope, get_history_by_name
 from ai_service import generate_ai_horoscope
 from timezone_service import get_timezone_data
@@ -102,10 +103,11 @@ def generate_horoscope(data: BirthDetails):
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 @app.get("/history/{name}")
 def get_user_history(name: str):
     try:
         rows = get_history_by_name(name)
-        return {"history": rows}
+        return JSONResponse(content={"history": rows})
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
