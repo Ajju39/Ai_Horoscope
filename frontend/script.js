@@ -229,11 +229,15 @@ document.getElementById("loginBtn").addEventListener("click", async function () 
     password
   });
 
+  console.log("Login response:", data, error);
+
   if (error) {
     document.getElementById("authStatus").textContent = error.message;
     return;
   }
 
-  document.getElementById("authStatus").textContent = 'Logged in as ${data.user.email}';
+  document.getElementById("authStatus").textContent =
+    `Logged in as ${data.user.email}`;
+
   await refreshUser();
 });
