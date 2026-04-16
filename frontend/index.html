@@ -9,7 +9,7 @@
 <body>
   <div class="page">
     <div class="container">
-      <h1>AI Horoscope App</h1>
+      <h1>AI Horoscope App TEST 123</h1>
       <p class="subtitle">Enter your birth details to get your horoscope insights.</p>
 
       <div class="result-card">
@@ -75,4 +75,27 @@
 
         <div class="result-card">
           <h2>Past Readings</h2>
-          <button type="button" id="
+          <button type="button" id="loadHistoryBtn">Load My History</button>
+          <div id="historyBox" class="history-box"></div>
+        </div>
+
+        <div class="result-card">
+          <h2>Ask Horoscope Bot</h2>
+          <input type="text" id="chatQuestion" placeholder="Ask about career, love, health..." />
+          <button type="button" id="chatBtn">Ask</button>
+          <div id="chatReply" class="ai-box" style="margin-top: 12px;"></div>
+        </div>
+
+        <div class="result-card">
+          <h2>AI Horoscope</h2>
+          <div id="r_ai_horoscope" class="ai-box"></div>
+        </div>
+
+      </div> <!-- result -->
+    </div> <!-- container -->
+  </div> <!-- page -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
