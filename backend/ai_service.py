@@ -32,7 +32,7 @@ def generate_ai_horoscope(name, sun, moon, asc):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=500
+        max_tokens=800
     )
 
     return response.choices[0].message.content

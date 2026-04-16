@@ -61,6 +61,8 @@ def generate_horoscope(data: BirthDetails):
 
         return {
             "name": data.name,
+            "birth_date_received": data.birth_date,
+            "birth_time_received": data.birth_time,
             "formatted_address": location["formatted_address"],
             "latitude": location["latitude"],
             "longitude": location["longitude"],
