@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Horoscope App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <h1>AI Horoscope App</h1>
+      <p class="subtitle">Enter your birth details to get your horoscope insights.</p>
+
+      <form id="horoscopeForm" class="form-card">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter your name" required />
+
+        <label for="birth_date">Date of Birth</label>
+        <input type="date" id="birth_date" required />
+
+        <label for="birth_time">Time of Birth</label>
+        <input type="time" id="birth_time" required />
+
+        <label for="birth_place">Place of Birth</label>
+        <input type="text" id="birth_place" placeholder="Ex: Hyderabad, India" required />
+
+        <button type="submit">Generate Horoscope</button>
+      </form>
+
+      <div id="loading" class="loading hidden">Generating your horoscope...</div>
+      <div id="error" class="error hidden"></div>
+
+      <div id="result" class="result hidden">
+        <div class="result-card">
+          <h2>Basic Details</h2>
+          <p><strong>Name:</strong> <span id="r_name"></span></p>
+          <p><strong>Location:</strong> <span id="r_location"></span></p>
+          <p><strong>Latitude:</strong> <span id="r_latitude"></span></p>
+          <p><strong>Longitude:</strong> <span id="r_longitude"></span></p>
+        </div>
+
+        <div class="result-card">
+          <h2>Astrology Signs</h2>
+          <p><strong>Sun Sign:</strong> <span id="r_sun_sign"></span></p>
+          <p><strong>Moon Sign:</strong> <span id="r_moon_sign"></span></p>
+          <p><strong>Ascendant:</strong> <span id="r_ascendant"></span></p>
+        </div>
+
+        <div class="result-card">
+          <h2>Life Insights</h2>
+          <p><strong>Finance:</strong> <span id="r_finance"></span></p>
+          <p><strong>Career:</strong> <span id="r_career"></span></p>
+          <p><strong>Health:</strong> <span id="r_health"></span></p>
+          <p><strong>Relationship:</strong> <span id="r_relationship"></span></p>
+        </div>
+
+        <div class="result-card">
+          <h2>AI Horoscope</h2>
+          <div id="r_ai_horoscope" class="ai-box"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
