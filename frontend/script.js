@@ -221,8 +221,13 @@ document.getElementById("signupBtn").addEventListener("click", async function ()
 });
 
 document.getElementById("loginBtn").addEventListener("click", async function () {
+  alert("Login button clicked");
+
   const email = document.getElementById("authEmail").value.trim();
   const password = document.getElementById("authPassword").value.trim();
+
+  console.log("Email:", email);
+  console.log("Password entered:", password.length > 0);
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({
     email,
@@ -233,11 +238,14 @@ document.getElementById("loginBtn").addEventListener("click", async function () 
 
   if (error) {
     document.getElementById("authStatus").textContent = error.message;
+    alert("Login error: " + error.message);
     return;
   }
 
   document.getElementById("authStatus").textContent =
     `Logged in as ${data.user.email}`;
+
+  alert`(Logged in as ${data.user.email})`;
 
   await refreshUser();
 });
