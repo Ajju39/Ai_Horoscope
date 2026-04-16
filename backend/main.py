@@ -102,10 +102,10 @@ def generate_horoscope(data: BirthDetails):
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-    @app.get("/history/{name}")
-    def get_user_history(name: str):
-     try:
+@app.get("/history/{name}")
+def get_user_history(name: str):
+    try:
         rows = get_history_by_name(name)
         return {"history": rows}
-     except Exception as e:
+    except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
