@@ -1,4 +1,5 @@
 from fastapi.responses import JSONResponse
+from ai_service import generate_ai_horoscope, generate_ai_chat_reply
 from supabase_service import save_horoscope, get_history_by_name
 from ai_service import generate_ai_horoscope
 from timezone_service import get_timezone_data
@@ -20,13 +21,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class ChatRequest(BaseModel):
+    name: str
+    sun_sign: str
+    moon_sign: str
+    ascendant: str
+    question: str
 
 class BirthDetails(BaseModel):
     name: str
     birth_date: str
     birth_time: str
     birth_place: str
-
+    user_id: str | None = None
 
 @app.get("/")
 def home():
@@ -62,6 +69,7 @@ def generate_horoscope(data: BirthDetails):
         )
         record = {
                     "name": data.name,
+                    "user_id": data.user_id,
                     "birth_date": data.birth_date,
                     "birth_time": data.birth_time,
                     "birth_place": data.birth_place,
@@ -79,6 +87,7 @@ def generate_horoscope(data: BirthDetails):
                     "health": reading["health"],
                     "relationship": reading["relationship"],
                     "ai_horoscope": ai_text
+                   
                 }
         save_horoscope(record)
         return {
@@ -109,5 +118,18 @@ def get_user_history(name: str):
     try:
         rows = get_history_by_name(name)
         return JSONResponse(content={"history": rows})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+@app.post("/chat")
+def chat_with_horoscope(data: ChatRequest):
+    try:
+        reply = generate_ai_chat_reply(
+            data.name,
+            data.sun_sign,
+            data.moon_sign,
+            data.ascendant,
+            data.question
+        )
+        return {"reply": reply}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

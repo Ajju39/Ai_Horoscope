@@ -36,3 +36,24 @@ def generate_ai_horoscope(name, sun, moon, asc):
     )
 
     return response.choices[0].message.content
+def generate_ai_chat_reply(name, sun, moon, asc, question):
+    prompt = f"""
+You are a helpful Vedic horoscope assistant.
+
+User details:
+- Name: {name}
+- Sun Sign: {sun}
+- Moon Sign: {moon}
+- Ascendant: {asc}
+
+User question:
+{question}
+
+Give a clear, friendly, practical answer in 120-180 words.
+"""
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=550
+    )
+    return response.choices[0].message.content

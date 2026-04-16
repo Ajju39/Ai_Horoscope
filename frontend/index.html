@@ -56,13 +56,46 @@
         </div>
 
         <div class="result-card">
+          <h2>Past Readings</h2>
+          <button type="button" id="loadHistoryBtn">Load My History</button>
+          <div id="historyBox" class="history-box"></div>
+        </div>
+
+        <div class="result-card">
+          <h2>Ask Horoscope Bot</h2>
+          <input type="text" id="chatQuestion" placeholder="Ask about career, love, health..." />
+          <button type="button" id="chatBtn">Ask</button>
+          <div id="chatReply" class="ai-box" style="margin-top: 12px;"></div>
+        </div>
+        
+        <div class="result-card">
+          <h2>Account</h2>
+
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" placeholder="Enter your email" />
+
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" placeholder="Enter your password" />
+
+          <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+            <button type="button" id="signupBtn">Sign Up</button>
+            <button type="button" id="loginBtn">Login</button>
+            <button type="button" id="logoutBtn">Logout</button>
+          </div>
+
+          <div id="authStatus" class="ai-box" style="margin-top:12px;">
+          </div>
+         
+        </div>
+
+          <div class="result-card">
           <h2>AI Horoscope</h2>
           <div id="r_ai_horoscope" class="ai-box"></div>
         </div>
       </div>
     </div>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>

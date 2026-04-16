@@ -112,7 +112,48 @@ button:hover {
   border-radius: 10px;
   border: 1px solid rgba(148, 163, 184, 0.2);
 }
+.history-box {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+  padding: 14px;
+  line-height: 1.6;
+}
+
+.history-item h3 {
+  margin: 0 0 8px 0;
+  color: #c7d2fe;
+  font-size: 16px;
+}
+
+.history-empty {
+  color: #cbd5e1;
+  padding: 10px 0;
+}
 
 .hidden {
   display: none;
+}
+
+button {
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.result-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.container {
+  padding-bottom: 40px;
 }
