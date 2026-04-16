@@ -1,3 +1,4 @@
+alert("script.js loaded");
 const SUPABASE_URL = "https://jubjcswqdpuoebharyyk.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1Ympjc3dxZHB1b2ViaGFyeXlrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjM1MjcxMSwiZXhwIjoyMDkxOTI4NzExfQ._2X9KrKcXXKY7lEPOzZXm4A7b2aFyaEutsIRce7KZs8";
 
