@@ -1,3 +1,4 @@
+alert("script.js loaded");
 let latestHoroscope = null;
 
 const form = document.getElementById("horoscopeForm");
