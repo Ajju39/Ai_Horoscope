@@ -21,12 +21,9 @@ async function refreshUser() {
   }
 
   currentUser = data.user || null;
-
-  if (currentUser) {
-    statusBox.textContent = `Logged in as ${currentUser.email}`;
-  } else {
-    statusBox.textContent = "Not logged in";
-  }
+  statusBox.textContent = currentUser
+    ? `Logged in as ${currentUser.email}`
+    : "Not logged in";
 }
 
 document.getElementById("signupBtn").addEventListener("click", async function () {
@@ -39,17 +36,9 @@ document.getElementById("signupBtn").addEventListener("click", async function ()
     return;
   }
 
-  const { error } = await supabaseClient.auth.signUp({
-    email,
-    password
-  });
+  const { error } = await supabaseClient.auth.signUp({ email, password });
 
-  if (error) {
-    statusBox.textContent = error.message;
-    return;
-  }
-
-  statusBox.textContent = "Signup successful!";
+  statusBox.textContent = error ? error.message : "Signup successful!";
   await refreshUser();
 });
 
@@ -74,9 +63,7 @@ document.getElementById("loginBtn").addEventListener("click", async function () 
   }
 
   currentUser = data.user;
-
   statusBox.textContent = `Logged in as ${data.user.email}`;
-  await refreshUser();
 });
 
 document.getElementById("logoutBtn").addEventListener("click", async function () {
@@ -89,10 +76,10 @@ document.getElementById("logoutBtn").addEventListener("click", async function ()
   }
 
   currentUser = null;
-  latestHoroscope = null;
   statusBox.textContent = "Logged out";
 });
 
+refreshUser();
 if (form) {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
