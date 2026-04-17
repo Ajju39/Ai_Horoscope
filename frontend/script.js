@@ -23,7 +23,7 @@ async function refreshUser() {
   currentUser = data.user || null;
 
   if (currentUser) {
-    statusBox.textContent = Logged in as ${currentUser.email};
+    statusBox.textContent = `Logged in as ${currentUser.email}`;
   } else {
     statusBox.textContent = "Not logged in";
   }
@@ -75,7 +75,7 @@ document.getElementById("loginBtn").addEventListener("click", async function () 
 
   currentUser = data.user;
 
-  statusBox.textContent = Logged in as ${data.user.email};
+  statusBox.textContent = `Logged in as ${data.user.email}`;
   await refreshUser();
 });
 
@@ -163,7 +163,7 @@ if (loadHistoryBtn) {
 
     try {
       const response = await fetch(
-        https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(currentUser.id)}
+        `https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(currentUser.id)}`
       );
       const data = await response.json();
 
