@@ -1,4 +1,3 @@
-document.getElementById("authStatus").textContent = "NEW SCRIPT LOADED";
 let latestHoroscope = null;
 
 const form = document.getElementById("horoscopeForm");
@@ -96,20 +95,21 @@ if (form) {
 }
 
 const loadHistoryBtn = document.getElementById("loadHistoryBtn");
+
 if (loadHistoryBtn) {
   loadHistoryBtn.addEventListener("click", async function () {
     const historyBox = document.getElementById("historyBox");
 
     if (!window.currentUser) {
-      historyBox.innerHTML = <div class="history-empty">Please login first.</div>;
+      historyBox.innerHTML = `<div class="history-empty">Please login first.</div>`;
       return;
     }
 
-    historyBox.innerHTML = <div class="history-empty">Loading history...</div>;
+    historyBox.innerHTML = `<div class="history-empty">Loading history...</div>`;
 
     try {
       const response = await fetch(
-        https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(window.currentUser.id)}
+        `https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(window.currentUser.id)}`
       );
 
       const data = await response.json();
@@ -121,7 +121,7 @@ if (loadHistoryBtn) {
       const history = data.history || [];
 
       if (history.length === 0) {
-        historyBox.innerHTML = <div class="history-empty">No saved readings found.</div>;
+        historyBox.innerHTML = `<div class="history-empty">No saved readings found.</div>`;
         return;
       }
 
@@ -136,16 +136,22 @@ if (loadHistoryBtn) {
         </div>
       `).join("");
     } catch (error) {
-      historyBox.innerHTML = <div class="history-empty">${error.message}</div>;
+      historyBox.innerHTML = `<div class="history-empty">${error.message}</div>`;
     }
   });
 }
 
 const chatBtn = document.getElementById("chatBtn");
+
 if (chatBtn) {
   chatBtn.addEventListener("click", async function () {
     const question = document.getElementById("chatQuestion").value.trim();
     const replyBox = document.getElementById("chatReply");
+
+    if (!window.currentUser) {
+      replyBox.textContent = "Please login first.";
+      return;
+    }
 
     if (!latestHoroscope) {
       replyBox.textContent = "Please generate a horoscope first.";
@@ -154,11 +160,6 @@ if (chatBtn) {
 
     if (!question) {
       replyBox.textContent = "Please enter a question.";
-      return;
-    }
-
-    if (!window.currentUser) {
-      replyBox.textContent = "Please login first.";
       return;
     }
 

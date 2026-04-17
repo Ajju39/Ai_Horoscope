@@ -9,13 +9,23 @@
 <body>
   <div class="page">
     <div class="container">
+
+      <!-- 🔥 HERO SECTION -->
       <div class="hero">
-        <h1>AI Horoscope App</h1>
+        <img src="./aha-logo.png" alt="AHA logo" class="app-logo" />
+
+        <h1>AHA</h1>
+
         <p class="subtitle">
-          Enter your birth details to get personalized horoscope insights, saved history, and AI-powered guidance.
+          AI Horoscope App — Full Stack + RAG Chatbot
+        </p>
+
+        <p class="tagline">
+          Personalized horoscope insights, saved history, and human-like AI guidance.
         </p>
       </div>
 
+      <!-- 🔐 ACCOUNT SECTION -->
       <div class="result-card">
         <h2>🔐 Account</h2>
 
@@ -25,12 +35,14 @@
         <label for="authPassword">Password</label>
         <input type="password" id="authPassword" placeholder="Enter your password" />
 
-        <div class="auth-actions">
+        <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
           <button type="button" id="signupBtn">Sign Up</button>
           <button type="button" id="loginBtn">Login</button>
           <button type="button" id="logoutBtn">Logout</button>
         </div>
 
+        <div id="authStatus" class="ai-box" style="margin-top:12px;"></div>
+      </div>
         <div id="authStatus" class="ai-box auth-status"></div>
       </div>
 
