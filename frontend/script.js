@@ -108,7 +108,7 @@ if (loadHistoryBtn) {
 
     try {
       const response = await fetch(
-        `https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(window.currentUser.id)}`
+        https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(window.currentUser.id)}
       );
 
       const data = await response.json();
