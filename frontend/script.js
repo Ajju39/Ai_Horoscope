@@ -1,3 +1,4 @@
+document.getElementById("authStatus").textContent = "NEW SCRIPT LOADED";
 let latestHoroscope = null;
 
 const form = document.getElementById("horoscopeForm");
