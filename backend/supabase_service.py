@@ -15,11 +15,11 @@ def save_horoscope(record: dict):
     return response.data
 
 
-def get_history_by_name(name: str, limit: int = 10):
+def get_history_by_user_id(user_id: str, limit: int = 10):
     response = (
         supabase.table("horoscope_history")
         .select("*")
-        .eq("name", name)
+        .eq("user_id", user_id)
         .order("created_at", desc=True)
         .limit(limit)
         .execute()
