@@ -100,11 +100,11 @@ if (loadHistoryBtn) {
     const historyBox = document.getElementById("historyBox");
 
     if (!window.currentUser) {
-      historyBox.innerHTML = `<div class="history-empty">Please login first.</div>`;
+      historyBox.innerHTML = <div class="history-empty">Please login first.</div>;
       return;
     }
 
-    historyBox.innerHTML = `<div class="history-empty">Loading history...</div>`;
+    historyBox.innerHTML = <div class="history-empty">Loading history...</div>;
 
     try {
       const response = await fetch(
@@ -120,7 +120,7 @@ if (loadHistoryBtn) {
       const history = data.history || [];
 
       if (history.length === 0) {
-        historyBox.innerHTML = `<div class="history-empty">No saved readings found.</div>`;
+        historyBox.innerHTML = <div class="history-empty">No saved readings found.</div>;
         return;
       }
 
@@ -135,7 +135,7 @@ if (loadHistoryBtn) {
         </div>
       `).join("");
     } catch (error) {
-      historyBox.innerHTML = `<div class="history-empty">${error.message}</div>`;
+      historyBox.innerHTML = <div class="history-empty">${error.message}</div>;
     }
   });
 }
@@ -156,6 +156,11 @@ if (chatBtn) {
       return;
     }
 
+    if (!window.currentUser) {
+      replyBox.textContent = "Please login first.";
+      return;
+    }
+
     replyBox.textContent = "Thinking...";
 
     try {
@@ -165,6 +170,7 @@ if (chatBtn) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          user_id: window.currentUser.id,
           name: latestHoroscope.name,
           sun_sign: latestHoroscope.sun_sign,
           moon_sign: latestHoroscope.moon_sign,

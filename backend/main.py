@@ -22,6 +22,7 @@ app.add_middleware(
 
 
 class ChatRequest(BaseModel):
+    user_id: str
     name: str
     sun_sign: str
     moon_sign: str
@@ -133,13 +134,17 @@ def get_user_history(user_id: str):
 @app.post("/chat")
 def chat_with_horoscope(data: ChatRequest):
     try:
+        history = get_history_by_user_id(data.user_id, limit=5)
+
         reply = generate_ai_chat_reply(
             data.name,
             data.sun_sign,
             data.moon_sign,
             data.ascendant,
-            data.question
+            data.question,
+            history
         )
+
         return {"reply": reply}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
