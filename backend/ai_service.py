@@ -16,31 +16,38 @@ Write a personalized horoscope for {name} using:
 - Moon Sign: {moon}
 - Ascendant: {asc}
 
-Style rules:
+Style:
 - Sound warm, natural, and human.
-- Do not sound robotic, generic, or overly mystical.
-- Avoid phrases like "based on the provided information", "it is important to note", or "as an AI".
-- Use simple, conversational language.
-- Keep it personal and easy to read.
-- Use short paragraphs, not stiff bullet points.
-- Avoid extreme claims or guaranteed outcomes.
-- Avoid medical, legal, or financial certainty.
+- Write like a wise, practical guide — not like an AI assistant.
+- Avoid robotic phrases like "based on the information provided", "it is important to note", or "you may find that".
+- Avoid sounding overly mystical, dramatic, or vague.
+- Do not overuse headings, bullet points, or repeated sentence patterns.
+- Use short paragraphs and smooth transitions.
+- Be personal, grounded, and easy to read.
+- Use contractions naturally where they fit.
+- Avoid certainty about health, money, or life events.
 
-Cover these areas naturally:
-- Personality
-- Career
-- Finance
-- Health
-- Relationships
+Content:
+- Talk about personality, career, finance, health, and relationships in a natural flow.
+- End with 3 practical, realistic tips.
 
-End with 3 short practical tips.
-
-Keep the response around 250 to 400 words.
+Length:
+- Around 250 to 400 words.
 """
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {
+                "role": "system",
+                "content": "You write in a warm, human, conversational tone and avoid sounding generic or robotic."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        temperature=0.9,
         max_tokens=700
     )
 
@@ -68,7 +75,7 @@ def generate_ai_chat_reply(name, sun, moon, asc, question, history):
     prompt = f"""
 You are a warm, thoughtful Vedic horoscope guide.
 
-Current user profile:
+Current profile:
 - Name: {name}
 - Sun Sign: {sun}
 - Moon Sign: {moon}
@@ -80,22 +87,36 @@ Past horoscope history:
 User question:
 {question}
 
-Instructions:
-- Answer like a human guide, not like a chatbot template.
-- Sound supportive, clear, and natural.
-- Use the past horoscope history when it helps.
-- If you notice a pattern in the user's past readings, mention it in a subtle, helpful way.
-- Do not use robotic phrases like "based on the provided information".
-- Do not overuse spiritual clichés.
-- Avoid extreme claims and avoid certainty about health, money, or life events.
-- Keep it personal, grounded, and easy to read.
+Style:
+- Answer like a real person talking naturally.
+- Sound supportive, clear, and warm.
+- Do not sound like a chatbot template.
+- Avoid phrases like "based on the data", "according to the information", or "it is important to note".
+- Avoid overused mystical clichés.
 - Use short paragraphs.
-- Keep the answer around 120 to 180 words.
+- Keep it grounded and practical.
+- If past readings show a pattern, mention it gently and naturally.
+- Do not make extreme claims.
+- Vary sentence length and avoid making every paragraph sound the same.
+- Write as if you are talking to one person, not writing a report.
+
+Length:
+- Around 120 to 180 words.
 """
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a warm, perceptive guide. Your tone should feel human, natural, and emotionally intelligent."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        temperature=0.95,
         max_tokens=450
     )
 
