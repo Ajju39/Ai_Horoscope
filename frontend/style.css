@@ -296,3 +296,34 @@ button:active {
     padding: 12px;
   }
 }
+.hero {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.auth-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.auth-status {
+  margin-top: 12px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-actions {
+    grid-template-columns: 1fr;
+  }
+}
