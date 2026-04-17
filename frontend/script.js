@@ -1,9 +1,35 @@
-let latestHoroscope = null;
-
 const form = document.getElementById("horoscopeForm");
 const loading = document.getElementById("loading");
 const errorBox = document.getElementById("error");
 const result = document.getElementById("result");
+
+function showLoading() {
+  if (loading) loading.classList.remove("hidden");
+}
+
+function hideLoading() {
+  if (loading) loading.classList.add("hidden");
+}
+
+function showError(message) {
+  if (!errorBox) return;
+  errorBox.textContent = message;
+  errorBox.classList.remove("hidden");
+}
+
+function hideError() {
+  if (!errorBox) return;
+  errorBox.textContent = "";
+  errorBox.classList.add("hidden");
+}
+
+function showResult() {
+  if (result) result.classList.remove("hidden");
+}
+
+function hideResult() {
+  if (result) result.classList.add("hidden");
+}
 
 if (form) {
   form.addEventListener("submit", async function (e) {
@@ -36,8 +62,6 @@ if (form) {
         throw new Error(data.detail || "Something went wrong while generating horoscope.");
       }
 
-      latestHoroscope = data;
-
       document.getElementById("r_name").textContent = data.name || "";
       document.getElementById("r_location").textContent = data.formatted_address || "";
       document.getElementById("r_latitude").textContent = data.latitude ?? "";
@@ -59,128 +83,4 @@ if (form) {
       showError(error.message);
     }
   });
-}
-
-const loadHistoryBtn = document.getElementById("loadHistoryBtn");
-if (loadHistoryBtn) {
-  loadHistoryBtn.addEventListener("click", async function () {
-    const historyBox = document.getElementById("historyBox");
-
-    if (!window.currentUser) {
-      historyBox.innerHTML = <div class="history-empty">Please login first.</div>;
-      return;
-    }
-
-    historyBox.innerHTML = <div class="history-empty">Loading history...</div>;
-
-    try {
-      const response = await fetch(
-        `https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(window.currentUser.id)}`
-      );
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || "Failed to load history.");
-      }
-
-      const history = data.history || [];
-
-      if (history.length === 0) {
-        historyBox.innerHTML = <div class="history-empty">No saved readings found.</div>;
-        return;
-      }
-
-      historyBox.innerHTML = history.map(item => `
-        <div class="history-item">
-          <h3>${formatDate(item.created_at)}</h3>
-          <div><strong>Name:</strong> ${item.name || ""}</div>
-          <div><strong>Birth Place:</strong> ${item.birth_place || ""}</div>
-          <div><strong>Sun:</strong> ${item.sun_sign || ""}</div>
-          <div><strong>Moon:</strong> ${item.moon_sign || ""}</div>
-          <div><strong>Ascendant:</strong> ${item.ascendant || ""}</div>
-        </div>
-      `).join("");
-    } catch (error) {
-      historyBox.innerHTML = <div class="history-empty">${error.message}</div>;
-    }
-  });
-}
-
-const chatBtn = document.getElementById("chatBtn");
-if (chatBtn) {
-  chatBtn.addEventListener("click", async function () {
-    const question = document.getElementById("chatQuestion").value.trim();
-    const replyBox = document.getElementById("chatReply");
-
-    if (!latestHoroscope) {
-      replyBox.textContent = "Please generate a horoscope first.";
-      return;
-    }
-
-    if (!question) {
-      replyBox.textContent = "Please enter a question.";
-      return;
-    }
-
-    replyBox.textContent = "Thinking...";
-
-    try {
-      const response = await fetch("https://ai-horoscope-zosx.onrender.com/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: latestHoroscope.name,
-          sun_sign: latestHoroscope.sun_sign,
-          moon_sign: latestHoroscope.moon_sign,
-          ascendant: latestHoroscope.ascendant,
-          question: question
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || "Chat failed.");
-      }
-
-      replyBox.textContent = data.reply || "";
-    } catch (error) {
-      replyBox.textContent = error.message;
-    }
-  });
-}
-
-function formatDate(dateString) {
-  if (!dateString) return "";
-  return new Date(dateString).toLocaleString();
-}
-
-function showLoading() {
-  if (loading) loading.classList.remove("hidden");
-}
-
-function hideLoading() {
-  if (loading) loading.classList.add("hidden");
-}
-
-function showError(message) {
-  if (!errorBox) return;
-  errorBox.textContent = message;
-  errorBox.classList.remove("hidden");
-}
-
-function hideError() {
-  if (!errorBox) return;
-  errorBox.textContent = "";
-  errorBox.classList.add("hidden");
-}
-
-function showResult() {
-  if (result) result.classList.remove("hidden");
-}
-
-function hideResult() {
-  if (result) result.classList.add("hidden");
 }
