@@ -1,85 +1,10 @@
-const SUPABASE_URL = "https://jubjcswqdpuoebharyyk.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1Ympjc3dxZHB1b2ViaGFyeXlrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjM1MjcxMSwiZXhwIjoyMDkxOTI4NzExfQ._2X9KrKcXXKY7lEPOzZXm4A7b2aFyaEutsIRce7KZs8";
-
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 let latestHoroscope = null;
-let currentUser = null;
 
 const form = document.getElementById("horoscopeForm");
 const loading = document.getElementById("loading");
 const errorBox = document.getElementById("error");
 const result = document.getElementById("result");
 
-async function refreshUser() {
-  const statusBox = document.getElementById("authStatus");
-  const { data, error } = await supabaseClient.auth.getUser();
-
-  if (error) {
-    statusBox.textContent = error.message;
-    return;
-  }
-
-  currentUser = data.user || null;
-  statusBox.textContent = currentUser
-    ? `Logged in as ${currentUser.email}`
-    : "Not logged in";
-}
-
-document.getElementById("signupBtn").addEventListener("click", async function () {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value.trim();
-  const statusBox = document.getElementById("authStatus");
-
-  if (!email || !password) {
-    statusBox.textContent = "Please enter email and password.";
-    return;
-  }
-
-  const { error } = await supabaseClient.auth.signUp({ email, password });
-
-  statusBox.textContent = error ? error.message : "Signup successful!";
-  await refreshUser();
-});
-
-document.getElementById("loginBtn").addEventListener("click", async function () {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value.trim();
-  const statusBox = document.getElementById("authStatus");
-
-  if (!email || !password) {
-    statusBox.textContent = "Please enter email and password.";
-    return;
-  }
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    statusBox.textContent = error.message;
-    return;
-  }
-
-  currentUser = data.user;
-  statusBox.textContent = `Logged in as ${data.user.email}`;
-});
-
-document.getElementById("logoutBtn").addEventListener("click", async function () {
-  const statusBox = document.getElementById("authStatus");
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    statusBox.textContent = error.message;
-    return;
-  }
-
-  currentUser = null;
-  statusBox.textContent = "Logged out";
-});
-
-refreshUser();
 if (form) {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -93,7 +18,7 @@ if (form) {
       birth_date: document.getElementById("birth_date").value,
       birth_time: document.getElementById("birth_time").value,
       birth_place: document.getElementById("birth_place").value.trim(),
-      user_id: currentUser ? currentUser.id : null
+      user_id: window.currentUser ? window.currentUser.id : null
     };
 
     try {
@@ -141,7 +66,7 @@ if (loadHistoryBtn) {
   loadHistoryBtn.addEventListener("click", async function () {
     const historyBox = document.getElementById("historyBox");
 
-    if (!currentUser) {
+    if (!window.currentUser) {
       historyBox.innerHTML = <div class="history-empty">Please login first.</div>;
       return;
     }
@@ -150,7 +75,7 @@ if (loadHistoryBtn) {
 
     try {
       const response = await fetch(
-        `https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(currentUser.id)}`
+        `https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(window.currentUser.id)}`
       );
       const data = await response.json();
 
@@ -259,5 +184,3 @@ function showResult() {
 function hideResult() {
   if (result) result.classList.add("hidden");
 }
-
-refreshUser();
