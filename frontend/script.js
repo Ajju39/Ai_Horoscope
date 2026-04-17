@@ -1,7 +1,5 @@
-console.log("script.js loaded");
-
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://jubjcswqdpuoebharyyk.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1Ympjc3dxZHB1b2ViaGFyeXlrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjM1MjcxMSwiZXhwIjoyMDkxOTI4NzExfQ._2X9KrKcXXKY7lEPOzZXm4A7b2aFyaEutsIRce7KZs8";
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -25,7 +23,7 @@ async function refreshUser() {
   currentUser = data.user || null;
 
   if (currentUser) {
-    statusBox.textContent = `Logged in as ${currentUser.email}`;
+    statusBox.textContent = Logged in as ${currentUser.email};
   } else {
     statusBox.textContent = "Not logged in";
   }
@@ -51,7 +49,7 @@ document.getElementById("signupBtn").addEventListener("click", async function ()
     return;
   }
 
-  statusBox.textContent = "Signup successful. Check your email if confirmation is enabled.";
+  statusBox.textContent = "Signup successful!";
   await refreshUser();
 });
 
@@ -70,14 +68,14 @@ document.getElementById("loginBtn").addEventListener("click", async function () 
     password
   });
 
-  console.log("Login response:", data, error);
-
   if (error) {
     statusBox.textContent = error.message;
     return;
   }
 
-  statusBox.textContent = `Logged in as ${data.user.email}`;
+  currentUser = data.user;
+
+  statusBox.textContent = Logged in as ${data.user.email};
   await refreshUser();
 });
 
@@ -91,144 +89,156 @@ document.getElementById("logoutBtn").addEventListener("click", async function ()
   }
 
   currentUser = null;
+  latestHoroscope = null;
   statusBox.textContent = "Logged out";
 });
 
-form.addEventListener("submit", async function (e) {
-  e.preventDefault();
+if (form) {
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  hideError();
-  hideResult();
-  showLoading();
+    hideError();
+    hideResult();
+    showLoading();
 
-  const payload = {
-    name: document.getElementById("name").value.trim(),
-    birth_date: document.getElementById("birth_date").value,
-    birth_time: document.getElementById("birth_time").value,
-    birth_place: document.getElementById("birth_place").value.trim(),
-    user_id: currentUser ? currentUser.id : null
-  };
+    const payload = {
+      name: document.getElementById("name").value.trim(),
+      birth_date: document.getElementById("birth_date").value,
+      birth_time: document.getElementById("birth_time").value,
+      birth_place: document.getElementById("birth_place").value.trim(),
+      user_id: currentUser ? currentUser.id : null
+    };
 
-  try {
-    const response = await fetch("https://ai-horoscope-zosx.onrender.com/generate-horoscope", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const response = await fetch("https://ai-horoscope-zosx.onrender.com/generate-horoscope", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.detail || "Something went wrong while generating horoscope.");
+      if (!response.ok) {
+        throw new Error(data.detail || "Something went wrong while generating horoscope.");
+      }
+
+      latestHoroscope = data;
+
+      document.getElementById("r_name").textContent = data.name || "";
+      document.getElementById("r_location").textContent = data.formatted_address || "";
+      document.getElementById("r_latitude").textContent = data.latitude ?? "";
+      document.getElementById("r_longitude").textContent = data.longitude ?? "";
+      document.getElementById("r_sun_sign").textContent = data.sun_sign || "";
+      document.getElementById("r_moon_sign").textContent = data.moon_sign || "";
+      document.getElementById("r_ascendant").textContent = data.ascendant || "";
+      document.getElementById("r_finance").textContent = data.finance || "";
+      document.getElementById("r_career").textContent = data.career || "";
+      document.getElementById("r_health").textContent = data.health || "";
+      document.getElementById("r_relationship").textContent = data.relationship || "";
+      document.getElementById("r_ai_horoscope").textContent =
+        data.ai_horoscope || "AI horoscope not available.";
+
+      hideLoading();
+      showResult();
+    } catch (error) {
+      hideLoading();
+      showError(error.message);
     }
+  });
+}
 
-    latestHoroscope = data;
+const loadHistoryBtn = document.getElementById("loadHistoryBtn");
+if (loadHistoryBtn) {
+  loadHistoryBtn.addEventListener("click", async function () {
+    const historyBox = document.getElementById("historyBox");
 
-    document.getElementById("r_name").textContent = data.name || "";
-    document.getElementById("r_location").textContent = data.formatted_address || "";
-    document.getElementById("r_latitude").textContent = data.latitude ?? "";
-    document.getElementById("r_longitude").textContent = data.longitude ?? "";
-    document.getElementById("r_sun_sign").textContent = data.sun_sign || "";
-    document.getElementById("r_moon_sign").textContent = data.moon_sign || "";
-    document.getElementById("r_ascendant").textContent = data.ascendant || "";
-    document.getElementById("r_finance").textContent = data.finance || "";
-    document.getElementById("r_career").textContent = data.career || "";
-    document.getElementById("r_health").textContent = data.health || "";
-    document.getElementById("r_relationship").textContent = data.relationship || "";
-    document.getElementById("r_ai_horoscope").textContent = data.ai_horoscope || "AI horoscope not available.";
-
-    hideLoading();
-    showResult();
-  } catch (error) {
-    hideLoading();
-    showError(error.message);
-  }
-});
-
-document.getElementById("loadHistoryBtn").addEventListener("click", async function () {
-  const name = document.getElementById("name").value.trim();
-  const historyBox = document.getElementById("historyBox");
-
-  if (!name) {
-    historyBox.innerHTML = <div class="history-empty">Please enter your name first.</div>;
-    return;
-  }
-
-  historyBox.innerHTML = <div class="history-empty">Loading history...</div>;
-
-  try {
-    const response = await fetch(`https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(name)}`);
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.detail || "Failed to load history.");
-    }
-
-    const history = data.history || [];
-
-    if (history.length === 0) {
-      historyBox.innerHTML = <div class="history-empty">No saved readings found.</div>;
+    if (!currentUser) {
+      historyBox.innerHTML = <div class="history-empty">Please login first.</div>;
       return;
     }
 
-    historyBox.innerHTML = history.map(item => `
-      <div class="history-item">
-        <h3>${formatDate(item.created_at)}</h3>
-        <div><strong>Birth Place:</strong> ${item.birth_place || ""}</div>
-        <div><strong>Sun:</strong> ${item.sun_sign || ""}</div>
-        <div><strong>Moon:</strong> ${item.moon_sign || ""}</div>
-        <div><strong>Ascendant:</strong> ${item.ascendant || ""}</div>
-      </div>
-    `).join("");
-  } catch (error) {
-    historyBox.innerHTML = <div class="history-empty">${error.message}</div>;
-  }
-});
+    historyBox.innerHTML = <div class="history-empty">Loading history...</div>;
 
-document.getElementById("chatBtn").addEventListener("click", async function () {
-  const question = document.getElementById("chatQuestion").value.trim();
-  const replyBox = document.getElementById("chatReply");
+    try {
+      const response = await fetch(
+        https://ai-horoscope-zosx.onrender.com/history/${encodeURIComponent(currentUser.id)}
+      );
+      const data = await response.json();
 
-  if (!latestHoroscope) {
-    replyBox.textContent = "Please generate a horoscope first.";
-    return;
-  }
+      if (!response.ok) {
+        throw new Error(data.detail || "Failed to load history.");
+      }
 
-  if (!question) {
-    replyBox.textContent = "Please enter a question.";
-    return;
-  }
+      const history = data.history || [];
 
-  replyBox.textContent = "Thinking...";
+      if (history.length === 0) {
+        historyBox.innerHTML = <div class="history-empty">No saved readings found.</div>;
+        return;
+      }
 
-  try {
-    const response = await fetch("https://ai-horoscope-zosx.onrender.com/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: latestHoroscope.name,
-        sun_sign: latestHoroscope.sun_sign,
-        moon_sign: latestHoroscope.moon_sign,
-        ascendant: latestHoroscope.ascendant,
-        question: question
-      })
-    });
+      historyBox.innerHTML = history.map(item => `
+        <div class="history-item">
+          <h3>${formatDate(item.created_at)}</h3>
+          <div><strong>Name:</strong> ${item.name || ""}</div>
+          <div><strong>Birth Place:</strong> ${item.birth_place || ""}</div>
+          <div><strong>Sun:</strong> ${item.sun_sign || ""}</div>
+          <div><strong>Moon:</strong> ${item.moon_sign || ""}</div>
+          <div><strong>Ascendant:</strong> ${item.ascendant || ""}</div>
+        </div>
+      `).join("");
+    } catch (error) {
+      historyBox.innerHTML = <div class="history-empty">${error.message}</div>;
+    }
+  });
+}
 
-    const data = await response.json();
+const chatBtn = document.getElementById("chatBtn");
+if (chatBtn) {
+  chatBtn.addEventListener("click", async function () {
+    const question = document.getElementById("chatQuestion").value.trim();
+    const replyBox = document.getElementById("chatReply");
 
-    if (!response.ok) {
-      throw new Error(data.detail || "Chat failed.");
+    if (!latestHoroscope) {
+      replyBox.textContent = "Please generate a horoscope first.";
+      return;
     }
 
-    replyBox.textContent = data.reply || "";
-  } catch (error) {
-    replyBox.textContent = error.message;
-  }
-});
+    if (!question) {
+      replyBox.textContent = "Please enter a question.";
+      return;
+    }
+
+    replyBox.textContent = "Thinking...";
+
+    try {
+      const response = await fetch("https://ai-horoscope-zosx.onrender.com/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: latestHoroscope.name,
+          sun_sign: latestHoroscope.sun_sign,
+          moon_sign: latestHoroscope.moon_sign,
+          ascendant: latestHoroscope.ascendant,
+          question: question
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || "Chat failed.");
+      }
+
+      replyBox.textContent = data.reply || "";
+    } catch (error) {
+      replyBox.textContent = error.message;
+    }
+  });
+}
 
 function formatDate(dateString) {
   if (!dateString) return "";
@@ -236,29 +246,31 @@ function formatDate(dateString) {
 }
 
 function showLoading() {
-  loading.classList.remove("hidden");
+  if (loading) loading.classList.remove("hidden");
 }
 
 function hideLoading() {
-  loading.classList.add("hidden");
+  if (loading) loading.classList.add("hidden");
 }
 
 function showError(message) {
+  if (!errorBox) return;
   errorBox.textContent = message;
   errorBox.classList.remove("hidden");
 }
 
 function hideError() {
+  if (!errorBox) return;
   errorBox.textContent = "";
   errorBox.classList.add("hidden");
 }
 
 function showResult() {
-  result.classList.remove("hidden");
+  if (result) result.classList.remove("hidden");
 }
 
 function hideResult() {
-  result.classList.add("hidden");
+  if (result) result.classList.add("hidden");
 }
 
 refreshUser();
